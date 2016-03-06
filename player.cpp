@@ -1,4 +1,7 @@
 #include "player.h"
+using namespace std;
+#include <vector>
+#include <stdlib.h>
 
 // Steven Brotz initial change
 
@@ -15,7 +18,25 @@ ANDREW WANG --- second teammate change
  */
 Player::Player(Side side) {
     // Will be set to true in test_minimax.cpp.
+
     testingMinimax = false;
+    mgBoard = new Board();
+    mySide = side;
+    if (mySide == BLACK){
+    	theirSide = WHITE;
+    }
+    else{
+    	theirSide = BLACK;
+    }
+
+    // BLACK = 1
+    // WHITE = 0
+    // We start first
+
+
+
+
+
 
     /* 
      * TODO: Do any initialization you need to do here (setting up the board,
@@ -28,6 +49,9 @@ Player::Player(Side side) {
  * Destructor for the player.
  */
 Player::~Player() {
+
+	delete mgBoard;
+
 }
 
 /*
@@ -47,5 +71,14 @@ Move *Player::doMove(Move *opponentsMove, int msLeft) {
      * TODO: Implement how moves your AI should play here. You should first
      * process the opponent's opponents move before calculating your own move
      */ 
+    if (opponentsMove != NULL){
+     	mgBoard->doMove (opponentsMove, theirSide);
+
+     }
+
+    if (mgBoard->hasMoves (mySide)){
+    	return (mgBoard->returnPossibleMove(mySide));
+    }
+
     return NULL;
 }

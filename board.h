@@ -4,12 +4,14 @@
 #include <bitset>
 #include "common.h"
 using namespace std;
+#include <vector>
 
 class Board {
    
 private:
     bitset<64> black;
     bitset<64> taken;    
+    vector <Move*> possibleMoves1;
        
     bool occupied(int x, int y);
     bool get(Side side, int x, int y);
@@ -28,7 +30,7 @@ public:
     int count(Side side);
     int countBlack();
     int countWhite();
-
+    Move *returnPossibleMove(Side side);
     void setBoard(char data[]);
 };
 

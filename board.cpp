@@ -1,5 +1,7 @@
 #include "board.h"
-
+#include <stdlib.h>
+#include <iostream>
+using namespace std;
 /*
  * Make a standard 8x8 othello board and initialize it to the standard setup.
  */
@@ -10,6 +12,7 @@ Board::Board() {
     taken.set(4 + 8 * 4);
     black.set(4 + 8 * 3);
     black.set(3 + 8 * 4);
+   
 }
 
 /*
@@ -67,6 +70,8 @@ bool Board::hasMoves(Side side) {
     return false;
 }
 
+
+
 /*
  * Returns true if a move is legal for the given side; false otherwise.
  */
@@ -99,6 +104,26 @@ bool Board::checkMove(Move *m, Side side) {
         }
     }
     return false;
+}
+
+/*
+ * 
+ */
+
+Move *Board::returnPossibleMove(Side side) {
+	possibleMoves1.clear();
+    for (int i = 0; i < 8; i++) {
+
+        for (int j = 0; j < 8; j++) {
+            Move move(i, j);
+            if (checkMove(&move, side)){
+            	possibleMoves1.push_back(&move);
+            }
+        }
+    }
+    int randomIndex = rand() % possibleMoves1.size();
+    Move *toReturn = possibleMoves1[randomIndex];
+    return toReturn;
 }
 
 /*
