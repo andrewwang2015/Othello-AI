@@ -12,6 +12,8 @@ Board::Board() {
     taken.set(4 + 8 * 4);
     black.set(4 + 8 * 3);
     black.set(3 + 8 * 4);
+
+    vector <Move*> possibleMoves;
    
 }
 
@@ -110,20 +112,21 @@ bool Board::checkMove(Move *m, Side side) {
  * 
  */
 
-Move *Board::returnPossibleMove(Side side) {
-	possibleMoves1.clear();
+vector <Move*> Board::returnPossibleMoves(Side side) {
+	
+	possibleMoves.erase(possibleMoves.begin(), possibleMoves.begin() + possibleMoves.size());
     for (int i = 0; i < 8; i++) {
 
         for (int j = 0; j < 8; j++) {
-            Move move(i, j);
-            if (checkMove(&move, side)){
-            	possibleMoves1.push_back(&move);
+            Move *move = new Move(i, j);
+
+            if (checkMove(move, side)){
+
+            	possibleMoves.push_back(move);            	
             }
         }
     }
-    int randomIndex = rand() % possibleMoves1.size();
-    Move *toReturn = possibleMoves1[randomIndex];
-    return toReturn;
+    return possibleMoves;
 }
 
 /*

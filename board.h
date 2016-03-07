@@ -10,13 +10,12 @@ class Board {
    
 private:
     bitset<64> black;
-    bitset<64> taken;    
-    vector <Move*> possibleMoves1;
-       
+    bitset<64> taken;     
     bool occupied(int x, int y);
     bool get(Side side, int x, int y);
     void set(Side side, int x, int y);
     bool onBoard(int x, int y);
+    vector <Move*> possibleMoves;
       
 public:
     Board();
@@ -28,10 +27,11 @@ public:
     bool checkMove(Move *m, Side side);
     void doMove(Move *m, Side side);
     int count(Side side);
+    vector <Move*> returnPossibleMoves(Side side); 
     int countBlack();
     int countWhite();
-    Move *returnPossibleMove(Side side);
     void setBoard(char data[]);
+
 };
 
 #endif

@@ -18,7 +18,6 @@ ANDREW WANG --- second teammate change
  */
 Player::Player(Side side) {
     // Will be set to true in test_minimax.cpp.
-
     testingMinimax = false;
     mgBoard = new Board();
     mySide = side;
@@ -28,11 +27,6 @@ Player::Player(Side side) {
     else{
     	theirSide = BLACK;
     }
-
-    // BLACK = 1
-    // WHITE = 0
-    // We start first
-
 
 
 
@@ -51,7 +45,6 @@ Player::Player(Side side) {
 Player::~Player() {
 
 	delete mgBoard;
-
 }
 
 /*
@@ -77,8 +70,24 @@ Move *Player::doMove(Move *opponentsMove, int msLeft) {
      }
 
     if (mgBoard->hasMoves (mySide)){
-    	return (mgBoard->returnPossibleMove(mySide));
+    	vector <Move*> possibleMoves1 = mgBoard -> returnPossibleMoves(mySide);
+
+    	unsigned int randomIndex = rand() % possibleMoves1.size();
+
+    	Move *toReturn = possibleMoves1[randomIndex];
+
+    	mgBoard->doMove(toReturn, mySide);
+
+    	for (unsigned int i = 0 ; i < possibleMoves1.size(); i++)
+    	{
+    		if (i != randomIndex){
+    			delete possibleMoves1[i];
+    		}
+    	}
+
+    	return toReturn;
     }
 
     return NULL;
+    
 }
