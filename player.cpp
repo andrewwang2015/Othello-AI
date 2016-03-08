@@ -2,6 +2,7 @@
 using namespace std;
 #include <vector>
 #include <stdlib.h>
+#include <algorithm>
 
 // Steven Brotz initial change
 
@@ -64,6 +65,15 @@ Move *Player::doMove(Move *opponentsMove, int msLeft) {
      * TODO: Implement how moves your AI should play here. You should first
      * process the opponent's opponents move before calculating your own move
      */ 
+
+    Move corners[] = {Move(0,0), Move(0,7), Move(-7,0), Move(7,7)};
+    Move edges [] = {Move(0,2), Move(0,3), Move(0,4), Move(0,5), Move(2,0), Move(3,0), Move(4,0), Move(5,0), Move(7,2), 
+    	Move(7,3), Move(7,4), Move(7,5), Move(2,7), Move(3,7), Move(4,7), Move(5,7)};
+    Move bad [] = {Move(1,0), Move(0,1), Move(0,0), Move(1,7), Move(6,0), Move(7,1), Move(6,7), Move(7,6)};
+    Move worst [] = {Move(1,1), Move(6,1), Move(1,6), Move(6,6)};
+
+    vector <int> tileValues;
+    tileValues.erase(tileValues.begin(), tileValues.begin() + tileValues.size());
     if (opponentsMove != NULL){
      	mgBoard->doMove (opponentsMove, theirSide);
 
@@ -72,15 +82,71 @@ Move *Player::doMove(Move *opponentsMove, int msLeft) {
     if (mgBoard->hasMoves (mySide)){
     	vector <Move*> possibleMoves1 = mgBoard -> returnPossibleMoves(mySide);
 
-    	unsigned int randomIndex = rand() % possibleMoves1.size();
+    	for (unsigned int i = 0 ; i < possibleMoves1.size(); i++){
+    		int flag = 0;
+    		Move *currentMove = possibleMoves1[i];
+    		for (unsigned int i = 0; i < 4; i++){
+    			if (corners[i].getX() == currentMove->getX() && corners[i].getY() == currentMove->getY()){
+    				tileValues.push_back(3);
+    				flag = 1;
+    				break;
+    			}
+    		}
 
-    	Move *toReturn = possibleMoves1[randomIndex];
+    		if (flag == 0){
+        		for (unsigned int i = 0; i < 16; i++){
+	    			if (edges[i].getX() == currentMove->getX() && edges[i].getY() == currentMove->getY()){
+	    				tileValues.push_back(1);
+	    				flag = 1;
+	    				break;
+	    			}
+    			}			
+    		}
+
+    		if (flag == 0){
+        		for (unsigned int i = 0; i < 8; i++){
+	    			if (bad[i].getX() == currentMove->getX() && bad[i].getY() == currentMove->getY()){
+	    				tileValues.push_back(-1);
+	    				flag = 1;
+	    				break;
+	    			}
+    			}			
+    		}
+
+    		if (flag == 0){
+        		for (unsigned int i = 0; i < 4; i++){
+	    			if (worst[i].getX() == currentMove->getX() && worst[i].getY() == currentMove->getY()){
+	    				tileValues.push_back(-3);
+	    				flag = 1;
+	    				break;
+	    			}
+    			}			
+    		}
+
+			if (flag == 0){
+				tileValues.push_back(0);
+			}
+    		
+    	}
+
+    	int max = -999;
+    	unsigned int index = 0;
+    	for (unsigned int i = 0 ; i < tileValues.size(); i++){
+    		if (tileValues[i] > max){
+    			max = tileValues[i];
+    			index = i;
+    		}
+    	}
+
+    	//unsigned int randomIndex = rand() % possibleMoves1.size();
+
+    	Move *toReturn = possibleMoves1[index];
 
     	mgBoard->doMove(toReturn, mySide);
 
     	for (unsigned int i = 0 ; i < possibleMoves1.size(); i++)
     	{
-    		if (i != randomIndex){
+    		if (i != index){
     			delete possibleMoves1[i];
     		}
     	}
@@ -89,5 +155,5 @@ Move *Player::doMove(Move *opponentsMove, int msLeft) {
     }
 
     return NULL;
-    
+    	
 }
