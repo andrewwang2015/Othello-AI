@@ -33,6 +33,8 @@ int main(int argc, char *argv[]) {
      */
 
     // Get player's move and check if it's right.
+
+    player -> setBoard(board);
     Move *move = player->doMove(NULL, 0);
 
     if (move != NULL && move->x == 1 && move->y == 1) {

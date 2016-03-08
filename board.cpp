@@ -59,6 +59,11 @@ bool Board::isDone() {
     return !(hasMoves(BLACK) || hasMoves(WHITE));
 }
 
+bool Board::occupiedBySide(Side side, int x, int y)
+{
+    return occupied(x, y) && (black[x + 8*y] == (side == BLACK));
+}
+
 /*
  * Returns true if there are legal moves for the given side.
  */

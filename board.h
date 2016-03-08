@@ -22,6 +22,8 @@ public:
     ~Board();
     Board *copy();
         
+
+    bool occupiedBySide(Side side, int x, int y);
     bool isDone();
     bool hasMoves(Side side);
     bool checkMove(Move *m, Side side);
