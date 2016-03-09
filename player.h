@@ -14,7 +14,7 @@ public:
     
     Move *doMove(Move *opponentsMove, int msLeft);
     void setBoard (Board *board1);
-    int calculateScoreOfBoard (Board *board1);
+
 
     // Flag to tell if the player is running within the test_minimax context
     bool testingMinimax;

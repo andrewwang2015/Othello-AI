@@ -66,60 +66,6 @@ void Player::setBoard (Board *board1)
 	mgBoard = board1;
 }
 
-int Player::calculateScoreOfBoard (Board *board1)
-{
-	int returnScore = 0;
-	if (board1->occupiedBySide(mySide, 0, 0))
-	{
-		returnScore += 3;
-	}
-
-	else if (board1->occupiedBySide(theirSide,0,0))
-	{
-		returnScore -= 3;
-	}
-
-	else {};
-
-	if (board1->occupiedBySide(mySide, 0, 7))
-	{
-		returnScore += 3;
-	}
-
-	else if (board1->occupiedBySide(theirSide, 0, 7))
-	{
-		returnScore -= 3;
-	}
-	else {};
-
-
-	if (board1->occupiedBySide(mySide, -7, 0))
-	{
-		returnScore += 3;
-	}
-
-	else if (board1 -> occupiedBySide(theirSide, -7, 0))
-	{
-		returnScore -= 3;
-	}
-
-	else {};
-
-	if (board1->occupiedBySide(mySide, 7, 7))
-	{
-		returnScore += 3;
-	}
-
-	else if (board1->occupiedBySide(theirSide, 7 , 7))
-	{
-		returnScore -=3;
-	}
-
-	else {};
-
-	return returnScore;
-}
-
 Move *Player::doMove(Move *opponentsMove, int msLeft) {
 
     /* 
@@ -161,9 +107,9 @@ Move *Player::doMove(Move *opponentsMove, int msLeft) {
 
     			Board *testBoard2 = testBoard -> copy();
     			testBoard2->doMove(possibleOpponentMoves[j], theirSide);
-    			int difference = testBoard2->count(mySide) - testBoard2->count(theirSide);
+    			//int difference = testBoard2->count(mySide) - testBoard2->count(theirSide);
 
-    			//int difference = calculateScoreOfBoard(testBoard2);
+    			int difference = testBoard2 -> calculateScoreOfBoard(mySide, theirSide);
     			if (difference < min){
     				min = difference;
     			}
@@ -174,7 +120,11 @@ Move *Player::doMove(Move *opponentsMove, int msLeft) {
     		delete testBoard;
     	}
 
-
+    	for (unsigned int i = 0; i < possibleOpponentMoves.size(); i++)
+    	{
+    		delete possibleOpponentMoves[i];
+    	}
+    	
     	unsigned int maxIndex = 0;
     	if (points.size() > 0)
     	{	
