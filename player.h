@@ -13,16 +13,15 @@ public:
     ~Player();
     
     Move *doMove(Move *opponentsMove, int msLeft);
-    void setBoard (Board *board1);
-
+    void setBoard(Board *board1);
+    int minimax(bool maxPlayer, Board *b, int depth, Side side);
 
     // Flag to tell if the player is running within the test_minimax context
     bool testingMinimax;
     Board *mgBoard;
     Side mySide;
     Side theirSide;
-    int minimax(Board* miniBoard, int depth, bool maxPlayer);
-
+    int bestMoveIdx;
 
 };
 

@@ -22,7 +22,6 @@ public:
     ~Board();
     Board *copy();
         
-    int calculateScoreOfBoard (Side mine, Side theirs);
     bool isDone();
     bool hasMoves(Side side);
     bool checkMove(Move *m, Side side);
@@ -32,7 +31,7 @@ public:
     int countBlack();
     int countWhite();
     void setBoard(char data[]);
-
+    int calculateScoreOfBoard (Side mine, Side theirs);
 };
 
 #endif

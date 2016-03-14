@@ -115,13 +115,11 @@ bool Board::checkMove(Move *m, Side side) {
 vector <Move*> Board::returnPossibleMoves(Side side) {
 	
 	possibleMoves.erase(possibleMoves.begin(), possibleMoves.begin() + possibleMoves.size());
+	
     for (int i = 0; i < 8; i++) {
-
         for (int j = 0; j < 8; j++) {
             Move *move = new Move(i, j);
-
-            if (checkMove(move, side)){
-
+            if (checkMove(move, side)) {
             	possibleMoves.push_back(move);            	
             }
         }
@@ -132,9 +130,6 @@ vector <Move*> Board::returnPossibleMoves(Side side) {
 /*
  * Modifies the board to reflect the specified move.
  */
-
-
-
 void Board::doMove(Move *m, Side side) {
     // A NULL move means pass.
     if (m == NULL) return;
@@ -210,354 +205,273 @@ void Board::setBoard(char data[]) {
     }
 }
 
-
 int Board::calculateScoreOfBoard (Side mine, Side theirs)
 {
-    int returnScore = count(mine) - count (theirs);
-    //cerr << get(mine, 1, 1) << endl;
-    // Move edges [] = {Move(0,2), Move(0,3), Move(0,4), Move(0,5), Move(2,0), Move(3,0), Move(4,0), Move(5,0), Move(7,2), 
-    //  Move(7,3), Move(7,4), Move(7,5), Move(2,7), Move(3,7), Move(4,7), Move(5,7)};
-    // Move bad [] = {Move(1,0), Move(0,1), Move(0,6), Move(1,7), Move(6,0), Move(7,1), Move(6,7), Move(7,6)};
-    // Move worst [] = {Move(1,1), Move(6,1), Move(1,6), Move(6,6)};
-
-    /******************************** VERTICALLY ADJACENT TO CORNER ******************************/
-
-    if (get(mine, 1, 1))
-    {
-        returnScore -= 3;
-    }
-
-    else if (get(theirs, 1, 1))
-    {
-        returnScore += 3;
-    }
-
-    if (get(mine, 6, 1))
-    {
-        returnScore -= 3;
-    }
-
-    else if (get(theirs, 6, 1))
-    {
-        returnScore += 3;
-    }
-
-    if (get(mine, 6, 6))
-    {
-        returnScore -= 3;
-    }
-
-    else if (get(theirs, 6, 6))
-    {
-        returnScore += 3;
-    }
-
-    if (get(mine, 1, 6))
-    {
-        returnScore -= 3;
-    }
-
-    else if (get(theirs, 1, 6))
-    {
-        returnScore += 3;
-    }
-    /******************************** ADJACENT TO CORNER ******************************/
-
-    if (get(mine, 1, 0))
-    {
-        returnScore -= 1;
-    }
-
-    else if (get(theirs, 1, 0))
-    {
-        returnScore += 1;
-    }
-
-
-
-    if (get(mine, 0, 1))
-    {
-        returnScore -= 1;
-    }
-
-    else if (get(theirs, 0, 1))
-    {
-        returnScore += 1;
-    }
-
-
-    if (get(mine, 0, 6))
-    {
-        returnScore -= 1;
-    }
-
-    else if (get(theirs, 0, 6))
-    {
-        returnScore += 1;
-    }
-
-    if (get(mine, 6, 0))
-    {
-        returnScore -= 1;
-    }
-
-    else if (get(theirs, 6, 0))
-    {
-        returnScore += 1;
-    }
-
-    if (get(mine, 1, 7))
-    {
-        returnScore -= 1;
-    }
-
-    else if (get(theirs, 1, 7))
-    {
-        returnScore += 1;
-    }
-
-    if (get(mine, 7, 1))
-    {
-        returnScore -= 1;
-    }
-
-    else if (get(theirs, 7, 1))
-    {
-        returnScore += 1;
-    }
-
-    if (get(mine, 6, 7))
-    {
-        returnScore -= 1;
-    }
-
-    else if (get(theirs, 6, 7))
-    {
-        returnScore += 1;
-    }
-
-    if (get(mine, 7, 6))
-    {
-        returnScore -= 1;
-    }
-
-    else if (get(theirs, 7, 6))
-    {
-        returnScore += 1;
-    }
-    /******************************** EDGES   **************************/
-    if (get(mine, 0, 2))
-    {
-        returnScore += 1;
-    }
-
-    else if (get(theirs, 0, 2))
-    {
-        returnScore -= 1;
-    }
-
-    if (get(mine, 0, 3))
-    {
-        returnScore += 1;
-    }
-
-    else if (get(theirs, 0, 3))
-    {
-        returnScore -= 1;
-    }
-
-    if (get(mine, 0, 4))
-    {
-        returnScore += 1;
-    }
-
-    else if (get(theirs, 0, 4))
-    {
-        returnScore -= 1;
-    }
-
-    if (get(mine, 0, 5))
-    {
-        returnScore += 1;
-    }
-
-    else if (get(theirs, 0, 5))
-    {
-        returnScore -= 1;
-    }
-
-    if (get(mine, 2, 0))
-    {
-        returnScore += 1;
-    }
-
-    else if (get(theirs, 2, 0))
-    {
-        returnScore -= 1;
-    }
-
-    if (get(mine, 3, 0))
-    {
-        returnScore += 1;
-    }
-
-    else if (get(theirs, 3, 0))
-    {
-        returnScore -= 1;
-    }
-
-    if (get(mine, 4, 0))
-    {
-        returnScore += 1;
-    }
-
-    else if (get(theirs, 4, 0))
-    {
-        returnScore -= 1;
-    }
-
-    if (get(mine, 5, 0))
-    {
-        returnScore += 1;
-    }
-
-    else if (get(theirs, 5, 0))
-    {
-        returnScore -= 1;
-    }
-
-
-    if (get(mine, 7, 2))
-    {
-        returnScore += 1;
-    }
-
-    else if (get(theirs, 7, 2))
-    {
-        returnScore -= 1;
-    }
-
-    if (get(mine, 7, 3))
-    {
-        returnScore += 1;
-    }
-
-    else if (get(theirs, 7, 3))
-    {
-        returnScore -= 1;
-    }
-
-
-    if (get(mine, 7, 4))
-    {
-        returnScore += 1;
-    }
-
-    else if (get(theirs, 7, 4))
-    {
-        returnScore -= 1;
-    }
-
-
-    if (get(mine, 7, 5))
-    {
-        returnScore += 1;
-    }
-
-    else if (get(theirs, 7, 5))
-    {
-        returnScore -= 1;
-    }
-
-
-
-    if (get(mine, 2, 7))
-    {
-        returnScore += 1;
-    }
-
-    else if (get(theirs, 2, 7))
-    {
-        returnScore -= 1;
-    }
-
-
-    if (get(mine, 3, 7))
-    {
-        returnScore += 1;
-    }
-
-    else if (get(theirs, 3, 7))
-    {
-        returnScore -= 1;
-    }
-
-
-    if (get(mine, 4, 7))
-    {
-        returnScore += 1;
-    }
-
-    else if (get(theirs, 4, 7))
-    {
-        returnScore -= 1;
-    }
-
-
-    if (get(mine, 5, 7))
-    {
-        returnScore += 1;
-    }
-
-    else if (get(theirs, 5, 7))
-    {
-        returnScore -= 1;
-    }
-    /******************************** CORNERS    ************************/
-    if (get(mine, 0, 0))
-    {
-        returnScore += 3;
-    }
-
-    else if (get(theirs,0,0))
-    {
-        returnScore -= 3;
-    }
-
-    
-
-    if (get(mine, 0, 7))
-    {
-        returnScore += 3;
-    }
-
-    else if (get(theirs, 0, 7))
-    {
-        returnScore -= 3;
-    }
-
-
-
-    if (get(mine, 7, 0))
-    {
-        returnScore += 3;
-    }
-
-    else if (get(theirs, 7, 0))
-    {
-        returnScore -= 3;
-    }
-
-
-    if (get(mine, 7, 7))
-    {
-        returnScore += 3;
-    }
-
-    else if (get(theirs, 7 , 7))
-    {
-        returnScore -=3;
-    }   
-
-    return returnScore;
+int returnScore = count(mine) - count (theirs);
+//cerr << get(mine, 1, 1) << endl;
+// Move edges [] = {Move(0,2), Move(0,3), Move(0,4), Move(0,5), Move(2,0), Move(3,0), Move(4,0), Move(5,0), Move(7,2),
+// Move(7,3), Move(7,4), Move(7,5), Move(2,7), Move(3,7), Move(4,7), Move(5,7)};
+// Move bad [] = {Move(1,0), Move(0,1), Move(0,6), Move(1,7), Move(6,0), Move(7,1), Move(6,7), Move(7,6)};
+// Move worst [] = {Move(1,1), Move(6,1), Move(1,6), Move(6,6)};
+/******************************** VERTICALLY ADJACENT TO CORNER ******************************/
+if (get(mine, 1, 1))
+{
+returnScore -= 3;
+}
+else if (get(theirs, 1, 1))
+{
+returnScore += 3;
+}
+if (get(mine, 6, 1))
+{
+returnScore -= 3;
+}
+else if (get(theirs, 6, 1))
+{
+returnScore += 3;
+}
+if (get(mine, 6, 6))
+{
+returnScore -= 3;
+}
+else if (get(theirs, 6, 6))
+{
+returnScore += 3;
+}
+if (get(mine, 1, 6))
+{
+returnScore -= 3;
+}
+else if (get(theirs, 1, 6))
+{
+returnScore += 3;
+}
+/******************************** ADJACENT TO CORNER ******************************/
+if (get(mine, 1, 0))
+{
+returnScore -= 1;
+}
+else if (get(theirs, 1, 0))
+{
+returnScore += 1;
+}
+if (get(mine, 0, 1))
+{
+returnScore -= 1;
+}
+else if (get(theirs, 0, 1))
+{
+returnScore += 1;
+}
+if (get(mine, 0, 6))
+{
+returnScore -= 1;
+}
+else if (get(theirs, 0, 6))
+{
+returnScore += 1;
+}
+if (get(mine, 6, 0))
+{
+returnScore -= 1;
+}
+else if (get(theirs, 6, 0))
+{
+returnScore += 1;
+}
+if (get(mine, 1, 7))
+{
+returnScore -= 1;
+}
+else if (get(theirs, 1, 7))
+{
+returnScore += 1;
+}
+if (get(mine, 7, 1))
+{
+returnScore -= 1;
+}
+else if (get(theirs, 7, 1))
+{
+returnScore += 1;
+}
+if (get(mine, 6, 7))
+{
+returnScore -= 1;
+}
+else if (get(theirs, 6, 7))
+{
+returnScore += 1;
+}
+if (get(mine, 7, 6))
+{
+returnScore -= 1;
+}
+else if (get(theirs, 7, 6))
+{
+returnScore += 1;
+}
+/******************************** EDGES **************************/
+if (get(mine, 0, 2))
+{
+returnScore += 3;
+}
+else if (get(theirs, 0, 2))
+{
+returnScore -= 3;
+}
+if (get(mine, 0, 3))
+{
+returnScore += 3;
+}
+else if (get(theirs, 0, 3))
+{
+returnScore -= 3;
+}
+if (get(mine, 0, 4))
+{
+returnScore += 3;
+}
+else if (get(theirs, 0, 4))
+{
+returnScore -= 3;
+}
+if (get(mine, 0, 5))
+{
+returnScore += 3;
+}
+else if (get(theirs, 0, 5))
+{
+returnScore -= 3;
+}
+if (get(mine, 2, 0))
+{
+returnScore += 3;
+}
+else if (get(theirs, 2, 0))
+{
+returnScore -= 3;
+}
+if (get(mine, 3, 0))
+{
+returnScore += 3;
+}
+else if (get(theirs, 3, 0))
+{
+returnScore -= 3;
+}
+if (get(mine, 4, 0))
+{
+returnScore += 3;
+}
+else if (get(theirs, 4, 0))
+{
+returnScore -= 3;
+}
+if (get(mine, 5, 0))
+{
+returnScore += 3;
+}
+else if (get(theirs, 5, 0))
+{
+returnScore -= 3;
+}
+if (get(mine, 7, 2))
+{
+returnScore += 3;
+}
+else if (get(theirs, 7, 2))
+{
+returnScore -= 3;
+}
+if (get(mine, 7, 3))
+{
+returnScore += 3;
+}
+else if (get(theirs, 7, 3))
+{
+returnScore -= 3;
+}
+if (get(mine, 7, 4))
+{
+returnScore += 3;
+}
+else if (get(theirs, 7, 4))
+{
+returnScore -= 3;
+}
+if (get(mine, 7, 5))
+{
+returnScore += 3;
+}
+else if (get(theirs, 7, 5))
+{
+returnScore -= 3;
+}
+if (get(mine, 2, 7))
+{
+returnScore += 3;
+}
+else if (get(theirs, 2, 7))
+{
+returnScore -= 3;
+}
+if (get(mine, 3, 7))
+{
+returnScore += 3;
+}
+else if (get(theirs, 3, 7))
+{
+returnScore -= 3;
+}
+if (get(mine, 4, 7))
+{
+returnScore += 3;
+}
+else if (get(theirs, 4, 7))
+{
+returnScore -= 3;
+}
+if (get(mine, 5, 7))
+{
+returnScore += 3;
+}
+else if (get(theirs, 5, 7))
+{
+returnScore -= 3;
+}
+/******************************** CORNERS ************************/
+if (get(mine, 0, 0))
+{
+returnScore += 10;
+}
+else if (get(theirs,0,0))
+{
+returnScore -= 10;
+}
+if (get(mine, 0, 7))
+{
+returnScore += 10;
+}
+else if (get(theirs, 0, 7))
+{
+returnScore -= 10;
+}
+if (get(mine, 7, 0))
+{
+returnScore += 10;
+}
+else if (get(theirs, 7, 0))
+{
+returnScore -= 10;
+}
+if (get(mine, 7, 7))
+{
+returnScore += 10;
+}
+else if (get(theirs, 7 , 7))
+{
+returnScore -= 10;
+}
+return returnScore;
 }
