@@ -4,6 +4,11 @@ using namespace std;
 #include <stdlib.h>
 #include <algorithm>
 
+
+int bestIndex;
+int bestValue;
+int score;
+
 // Steven Brotz initial change
 
 /* -----------------------------
@@ -66,6 +71,61 @@ void Player::setBoard (Board *board1)
 	mgBoard = board1;
 }
 
+
+int Player::minimax (Board* miniBoard, int depth, bool maxPlayer)
+{
+
+
+	if (depth == 0)
+	{
+		return miniBoard ->calculateScoreOfBoard(mySide, theirSide);
+	}
+
+	if (maxPlayer)
+	{
+
+		bestValue = 1000;
+		vector <Move*> possibleMoves = miniBoard -> returnPossibleMoves(mySide);
+		
+		
+
+		for (int i = 0; i < possibleMoves.size(); i ++)
+		{
+			Board *testBoard = miniBoard -> copy();
+    		testBoard->doMove(possibleMoves[i], mySide);
+    		score = minimax (testBoard, depth -1, false);
+    		if (score < bestValue){
+    			bestValue = score;
+    			bestIndex = i;
+    		}
+
+    		
+		}
+		return bestValue;
+
+	}
+
+	else
+	{
+
+		bestValue = -1000;
+		vector <Move*> possibleMoves = miniBoard -> returnPossibleMoves(theirSide);
+		for (int i = 0; i < possibleMoves.size(); i ++)
+		{
+			Board *testBoard = miniBoard -> copy();
+    		testBoard->doMove(possibleMoves[i], mySide);
+    		score = minimax (testBoard, depth -1, true);
+    		if (score > bestValue){
+    			bestValue = score;
+    			bestIndex = i;
+    		}
+
+    		
+		}
+		return bestValue;
+
+	}
+}
 Move *Player::doMove(Move *opponentsMove, int msLeft) {
 
     /* 
@@ -86,65 +146,67 @@ Move *Player::doMove(Move *opponentsMove, int msLeft) {
      	mgBoard->doMove (opponentsMove, theirSide);
     }
 
-    vector <int> points; 
-    points.erase(points.begin(), points.begin() + points.size());
+    // vector <int> points; 
+    // points.erase(points.begin(), points.begin() + points.size());
 
     if (mgBoard->hasMoves (mySide)){
     	vector <Move*> possibleMoves1 = mgBoard -> returnPossibleMoves(mySide);
 
-    	vector <Move*> possibleOpponentMoves;
-    	for (unsigned int i = 0; i < possibleMoves1.size(); i++)
-    	{
-    		//cerr << possibleMoves1[i]->getX() << ", " << possibleMoves1[i]-> getY() << endl;
-    		Board *testBoard = mgBoard -> copy();
-    		testBoard->doMove(possibleMoves1[i], mySide);
-    		possibleOpponentMoves.erase(possibleOpponentMoves.begin(), possibleOpponentMoves.begin() + possibleOpponentMoves.size());
-    		possibleOpponentMoves = testBoard -> returnPossibleMoves(theirSide);
- 			int min = 999;
+    // 	vector <Move*> possibleOpponentMoves;
+    // 	for (unsigned int i = 0; i < possibleMoves1.size(); i++)
+    // 	{
+    // 		//cerr << possibleMoves1[i]->getX() << ", " << possibleMoves1[i]-> getY() << endl;
+    // 		Board *testBoard = mgBoard -> copy();
+    // 		testBoard->doMove(possibleMoves1[i], mySide);
+    // 		possibleOpponentMoves.erase(possibleOpponentMoves.begin(), possibleOpponentMoves.begin() + possibleOpponentMoves.size());
+    // 		possibleOpponentMoves = testBoard -> returnPossibleMoves(theirSide);
+ 			// int min = 999;
     		
-    		for (unsigned int j = 0 ; j < possibleOpponentMoves.size(); j++)
-    		{		
+    // 		for (unsigned int j = 0 ; j < possibleOpponentMoves.size(); j++)
+    // 		{		
 
-    			Board *testBoard2 = testBoard -> copy();
-    			testBoard2->doMove(possibleOpponentMoves[j], theirSide);
-    			//int difference = testBoard2->count(mySide) - testBoard2->count(theirSide);
+    // 			Board *testBoard2 = testBoard -> copy();
+    // 			testBoard2->doMove(possibleOpponentMoves[j], theirSide);
+    // 			//int difference = testBoard2->count(mySide) - testBoard2->count(theirSide);
 
-    			int difference = testBoard2 -> calculateScoreOfBoard(mySide, theirSide);
-    			if (difference < min){
-    				min = difference;
-    			}
+    // 			int difference = testBoard2 -> calculateScoreOfBoard(mySide, theirSide);
+    // 			if (difference < min){
+    // 				min = difference;
+    // 			}
 
-    			delete testBoard2;
-    		}
-    		points.push_back(min);
-    		delete testBoard;
-    	}
+    // 			delete testBoard2;
+    // 		}
+    // 		points.push_back(min);
+    // 		delete testBoard;
+    // 	}
 
-    	for (unsigned int i = 0; i < possibleOpponentMoves.size(); i++)
-    	{
-    		delete possibleOpponentMoves[i];
-    	}
+    // 	for (unsigned int i = 0; i < possibleOpponentMoves.size(); i++)
+    // 	{
+    // 		delete possibleOpponentMoves[i];
+    // 	}
     	
-    	unsigned int maxIndex = 0;
-    	if (points.size() > 0)
-    	{	
-    		int max = -999;
-    		for (unsigned int i = 0 ; i < points.size(); i++)
-    		{
-    			if (points[i] > max){
-    				max = points[i];
-    				maxIndex = i;
-    			}
-    		}
-    	}
+    // 	unsigned int maxIndex = 0;
+    // 	if (points.size() > 0)
+    // 	{	
+    // 		int max = -999;
+    // 		for (unsigned int i = 0 ; i < points.size(); i++)
+    // 		{
+    // 			if (points[i] > max){
+    // 				max = points[i];
+    // 				maxIndex = i;
+    // 			}
+    // 		}
+    // 	}
 
-    	Move *toReturn = possibleMoves1[maxIndex];
+  		int i = minimax(mgBoard, 3, true);
+    	Move *toReturn = possibleMoves1[bestIndex];
+
 
     	mgBoard->doMove(toReturn, mySide);
 
     	for (unsigned int i = 0 ; i < possibleMoves1.size(); i++)
     	{
-    		if (i != maxIndex){
+    		if (i != bestIndex){
     			delete possibleMoves1[i];
     		}
     	}

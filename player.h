@@ -21,6 +21,7 @@ public:
     Board *mgBoard;
     Side mySide;
     Side theirSide;
+    int minimax(Board* miniBoard, int depth, bool maxPlayer);
 
 
 };
